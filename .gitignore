@@ -1,0 +1,8 @@
+# Python venv
+dev
+
+# Script to submit a job
+run-job.sh
+
+# Nested build directory
+/build*
