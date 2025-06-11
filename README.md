@@ -1,6 +1,9 @@
 Initalize the submodules (torch-mlir, llvm-project)
 `git submodule update --init --recursive`
 
+ALWAYS load PYTHON 3.12 before you start (or load by default in ~/zshrc)
+`module load PYTHON/3.12`
+
 Set-up a python virtual environment
 ```
 python3 -m venv venv_torch_mlir
@@ -25,9 +28,21 @@ cmake -GNinja -Bbuild \
   externals/llvm-project/llvm \
   -DLLVM_ENABLE_PROJECTS=mlir \
   -DLLVM_EXTERNAL_PROJECTS="torch-mlir" \
-  -DLLVM_EXTERNAL_TORCH_MLIR_SOURCE_DIR="$PWD"
+  -DLLVM_EXTERNAL_TORCH_MLIR_SOURCE_DIR="$PWD" \
+  -DTORCH_MLIR_ENABLE_PYTORCH_EXTENSIONS=ON \
+  -DTORCH_MLIR_ENABLE_JIT_IR_IMPORTER=ON
 ```
 
 Build (and inital testing)
-ToDo: Use Ninja directly
-`cmake --build build --target check-torch-mlir --target check-mlir --target check-torch_mlir-python`
+`cmake --build build --target check-torch-mlir //--target check-mlir --target check-torch_mlir-python`
+Or use Ninja directly
+`ninja -C build check-torch-mlir`
+
+Setup Python Environment to export the built Python packages
+`export PYTHONPATH=`pwd`/build/tools/torch-mlir/python_packages/torch_mlir:`pwd`/test/python/fx_importer`
+
+In venv_torch_mlir/bin/activate add the following (adapt the path if necessary):
+```
+# Add torch-mlir-opt to PATH
+export PATH="/home/ab123456/ml-compiler-exercise/externals/torch-mlir/build/bin/:$PATH"
+```
