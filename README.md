@@ -38,11 +38,12 @@ Build (and inital testing)
 Or use Ninja directly
 `ninja -C build check-torch-mlir`
 
-Setup Python Environment to export the built Python packages
-`export PYTHONPATH=`pwd`/build/tools/torch-mlir/python_packages/torch_mlir:`pwd`/test/python/fx_importer`
-
 In venv_torch_mlir/bin/activate add the following (adapt the path if necessary):
 ```
 # Add torch-mlir-opt to PATH
 export PATH="/home/ab123456/ml-compiler-exercise/externals/torch-mlir/build/bin/:$PATH"
+
+# Add MLIR Python bindings and Setup Python Environment to export the built Python packages
+export PYTHONPATH=/home/ab123456/ml-compiler-exercise/externals/torch-mlir/build/tools/mlir/python_packages/mlir_core:/home/ab123456/ml-compiler-exercise/externals/torch-mlir/build/tools/torch-mlir/python_packages/torch_mlir:/home/ab123456/ml-compiler-exercise/externals/torch-mlir/test/python/fx_importer
+
 ```
