@@ -16,6 +16,10 @@ set(MLIR_BINARY_DIR ${CMAKE_BINARY_DIR})
 include(AddLLVM)
 include(TableGen)
 
+add_custom_target(torch-mlir-opt
+  COMMENT "torch-mlir-opt is assumed installed and available in PATH"
+)
+
 list(APPEND CMAKE_MODULE_PATH "${MLIR_CMAKE_DIR}")
 include(AddMLIR)
 include_directories(${LLVM_INCLUDE_DIRS})
@@ -24,16 +28,16 @@ include_directories(${PROJECT_SOURCE_DIR})
 include_directories(${PROJECT_SOURCE_DIR}/externals/llvm-project)
 include_directories(${PROJECT_BINARY_DIR})
 
-message(STATUS "Fetching or-tools...")
-include(FetchContent)
-FetchContent_Declare(
-  or-tools
-  GIT_REPOSITORY https://github.com/google/or-tools.git
-  GIT_TAG        v9.11
-)
-FetchContent_MakeAvailable(or-tools)
-message(STATUS "Done fetching or-tools")
+#message(STATUS "Fetching or-tools...")
+#include(FetchContent)
+#FetchContent_Declare(
+	#or-tools
+  #GIT_REPOSITORY https://github.com/google/or-tools.git
+  #GIT_TAG        v9.11
+  #)
+  #FetchContent_MakeAvailable(or-tools)
+  #message(STATUS "Done fetching or-tools")
 
 add_subdirectory(tests)
-add_subdirectory(tools)
-add_subdirectory(lib)
+# add_subdirectory(tools)
+# add_subdirectory(lib)

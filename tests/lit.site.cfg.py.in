@@ -1,0 +1,18 @@
+@LIT_SITE_CFG_IN_HEADER@
+
+config.enable_bindings_python = @MLIR_ENABLE_BINDINGS_PYTHON@
+config.torch_mlir_obj_root = "@TORCH_MLIR_BINARY_DIR@"
+#config.torch_mlir_python_packages_dir = "@TORCH_MLIR_PYTHON_PACKAGES_DIR@"
+config.llvm_tools_dir = lit_config.substitute("@LLVM_TOOLS_DIR@")
+config.mlir_obj_dir = "@MLIR_BINARY_DIR@"
+config.llvm_shlib_ext = "@SHLIBEXT@"
+config.project_binary_dir = "@PROJECT_BINARY_DIR@"
+config.project_source_dir = "@PROJECT_SOURCE_DIR@"
+config.python_executable = "@Python3_EXECUTABLE@"
+#config.torch_mlir_build_dir = "@TORCH_MLIR_BUILD_DIR@"
+
+import lit.llvm
+lit.llvm.initialize(lit_config, config)
+
+# Let the main config do the real work.
+lit_config.load_config(config, "@PROJECT_SOURCE_DIR@/tests/lit.cmake.cfg.py")

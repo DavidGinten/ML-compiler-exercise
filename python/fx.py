@@ -1,32 +1,135 @@
 import torch
 import torch.fx
-#import torch_mlir.ir
-#from mlir.dialects import func
-import mlir.ir
-from mlir.dialects import func, arith, tensor, builtin # These are standard MLIR dialects
-#import torch_mlir.dialects.torch as torch_dialect # Renaming 'torch' to avoid conflict with PyTorch 'torch'
-#import torch_mlir.dialects.func as func
-from torch_mlir.dialects import torch as torch_dialects
+import torch_mlir.ir
+from torch_mlir.extras.fx_importer import FxImporter
+from torch_mlir.extras.fx_decomp_util import get_decomposition_table
+from torch_mlir.dialects import (
+    torch as torch_dialect,
+    func as func_dialect,
+)
+
+from torch_mlir.compiler_utils import (
+    OutputType,
+    run_pipeline_with_repro_report,
+    lower_mlir_module,
+)
+
+REQUIRED_DIALCTS = [
+    "builtin",
+    "func",
+    "torch",
+]
+
+#####  Model definiton  ######
 
 class MyModel(torch.nn.Module):
-    def __init__(self) -> None:
-        super().__init__()
-        self.param = torch.nn.Parameter(torch.rand(3, 4))
-        self.linear = torch.nn.Linear(4, 5)
+    #def __init__(self) -> None:
+    #    super().__init__()
+    #    self.param = torch.nn.Parameter(torch.rand(3, 4))
+    #    self.linear = torch.nn.Linear(4, 5)
 
     def forward(self, x):
-        return self.linear(x + self.param).clamp(min=0.0, max=1.0)
+        return x * 2 + 1 #self.linear(x + self.param).clamp(min=0.0, max=1.0)
 
 # (Assuming you have a PyTorch model and example_input from Phase 1)
-model = MyModel()
-example_input = torch.randn(1, 10)
-fx_graph_module = torch.fx.symbolic_trace(model)
+f = MyModel()
+example_input = (torch.randn(3),)
+fx_graph_module = torch.fx.symbolic_trace(f)
 fx_graph = fx_graph_module.graph
 
 print(fx_graph)
 
-# (And assuming you have a Context from Phase 2)
-ctx = torch_mlir.ir.Context()
+class TorchMlirBuilder:
+    __slots__ = [
+        "_c",
+        "_cc",
+        "_m",
+        "_m_ip",
+        "_py_attr_tracker",
+        "_hooks",
+        "symbol_table",
+    ]
+
+    def __init__(
+            self,
+            *, # all following arguments must be explicitly named (keyword-only)
+            context: Optional[Context] = None,
+            config_check: bool = True,
+    ):
+        self._m = context if context else Context()
+        self._m = Module.create(Location.unknown(self._c))
+        if config_check:
+            self._config_check()
+
+    def _config_check(self):
+        for dname in REQUIRED_DIALCTS:
+            try:
+                self._c.dialects[dname]
+                logging.debug("Context has registered dialect '%s'", dname)
+            except IndexError:
+                raise RuntimeError(
+                    f"The MLIR context {self._c} is missing required dialect '{dname}'"
+                )
+    
+    @property
+    def module(self) -> Module:
+        return self._m
+
+    def import_frozen_program(
+            self,
+            prog: torch.export.ExportedProgram,
+            *,
+            func_name: str = "main",
+            func_visibility: Optional[str] = None,
+            import_symbolic_shape_expressions: bool = False,
+    ) -> Operation:
+        """Imports a consolidated torch.export.ExportedProgram instance."""
+        
+        sig = prog.graph_signature
+        state_dict = prog.state_dict
+        arg_replacements: Dict[str, Any] = {}
+        
+
+
+
+
+
+
+
+
+
+
+
+
+def export_and_import():
+    """ Here starts the fx.export_and_import function """
+    context = torch_mlir.ir.Context()
+    torch_dialect.register_dialect(context)
+
+    builder = TorchMlirBuilder(context=context)
+
+    # Export program
+    prog = torch.export.export(
+        f, example_input, {}, dynamic_shapes=None, strict=False
+    )
+
+    decomposition_table = get_decomposition_table()
+    if decomposition_table:
+        prog = prog.run_decompositions(decomposition_table)
+
+    builder.import_frozen_program(
+            prog,
+            func_name="main",
+            import_symbolic_shape_expressions=False,
+    )
+    return builder.module
+
+
+if __name__ == "__main__":
+    export_and_import()
+
+
+
 
 """
 # Step 1: Create the MLIR Module and Function
@@ -58,7 +161,7 @@ with ctx, torch_mlir.ir.Location.unknown(): # Use an active context and a locati
             for node in fx_graph.nodes:
                 if node.op == 'placeholder':
                     # Assuming only one placeholder for simplicity
-                    fx_node_to_mlir_value_map[node] = input_mlir_value
+                    fx_node_to_mlir_value_map[node] =input_mlir_value
                     break
 
             # Step 3: Iterate through FX graph nodes in topological order

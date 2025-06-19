@@ -1,1 +1,1 @@
-pre-commit
+lit==16.0.6
