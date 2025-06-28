@@ -6,3 +6,6 @@ run-job.sh
 
 # Nested build directory
 /build*
+
+
+*mlir.txt
