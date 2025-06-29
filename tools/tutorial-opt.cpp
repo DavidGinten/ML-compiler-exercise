@@ -1,5 +1,8 @@
 #include "mlir/Conversion/ArithToLLVM/ArithToLLVM.h"
 #include "mlir/Conversion/FuncToLLVM/ConvertFuncToLLVMPass.h"
+#include "mlir/Dialect/Bufferization/Pipelines/Passes.h"
+#include "mlir/Dialect/Bufferization/Transforms/Passes.h"
+#include "mlir/Dialect/Linalg/Passes.h"
 #include "mlir/InitAllDialects.h"
 #include "mlir/InitAllPasses.h"
 #include "mlir/Pass/PassManager.h"
@@ -8,8 +11,17 @@
 #include "mlir/Transforms/Passes.h"
 
 void linalgToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
-  // Poly
-  //manager.addPass(mlir::tutorial::poly::createPolyToStandard());
+  manager.addPass(mlir::createCanonicalizerPass());
+  //mlir::bufferization::OneShotBufferizationOptions bufferizationOptions;
+  //bufferizationOptions.bufferizeFunctionBoundaries = true;
+  
+  manager.addPass(
+      mlir::bufferization::createOneShotBufferizePass());
+  //mlir::bufferization::BufferDeallocationPipelineOptions deallocationOptions;
+  //mlir::bufferization::buildBufferDeallocationPipeline(manager, deallocationOptions);
+
+  manager.addPass(mlir::createConvertLinalgToLoopsPass());
+
   manager.addPass(mlir::createCanonicalizerPass());
 
   manager.addPass(mlir::createConvertFuncToLLVMPass());
