@@ -94,7 +94,7 @@ def lower_pytorch_to_torch_mlir():
 @run
 def lower_pytorch_to_linalg_on_tensors():
     # Export model to torch-mlir
-    m = fx.export_and_import(ConvolutionalNetwork(), torch.randn(1, 1, 28, 28), output_type=OutputType.LINALG_ON_TENSORS, 
+    m = fx.export_and_import(ConvolutionalNetwork(), torch.randn(32, 1, 28, 28), output_type=OutputType.LINALG_ON_TENSORS, 
                              func_name = "cnn_model")
     
     # Model in torch dialect

@@ -1,0 +1,67 @@
+#script:
+#  - pwd
+#  - ls -R
+
+stages:
+  - build_project
+  - torch_to_mlir
+  - passes
+  - mlir_translate
+  - llc
+  - build
+  - test
+
+build_project:
+  stage: build_project
+  script:
+    - sh build.sh
+
+get_linalg:
+  stage: torch_to_mlir
+  script:
+    - python python/sample/torch_mlir_lowering_sample_model.py
+    - python python/mnist/torch_mlir_lowering_mnist_model.py
+    - python python/cnn/torch_mlir_lowering_cnn_model.py
+
+run_passes:
+  stage: passes
+  script:
+    - build-ninja/tools/tutorial-opt --linalg-to-llvm python/sample/sample_model_linalg.mlir > python/sample/sample_model_llvm.mlir
+    - build-ninja/tools/tutorial-opt --linalg-to-llvm python/mnist/mnist_model_linalg.mlir > python/mnist/mnist_model_llvm.mlir
+    - build-ninja/tools/tutorial-opt --linalg-to-llvm python/cnn/cnn_model_linalg.mlir > python/cnn/cnn_model_llvm.mlir
+
+run_mlir-translate:
+  stage: mlir_translate
+  script:
+    - mlir-translate -mlir-to-llvmir python/sample/sample_model_llvm.mlir > python/sample/sample_model_llvm_ir.ll
+    - mlir-translate -mlir-to-llvmir python/mnist/mnist_model_llvm.mlir > python/mnist/mnist_model_llvm_ir.ll
+    - mlir-translate -mlir-to-llvmir python/cnn/cnn_model_llvm.mlir > python/cnn/cnn_model_llvm_ir.ll
+
+llc:
+  stage: llc
+  script:
+  - llc --filetype=obj python/sample/sample_model_llvm_ir.ll
+  - llc --filetype=obj python/mnist/mnist_model_llvm_ir.ll
+  - llc --filetype=obj python/cnn/cnn_model_llvm_ir.ll
+
+build:
+  stage: build
+  script:
+  - gcc -c python/sample/sample_model_main.cpp -o python/sample/sample_model_main.o && 
+    gcc python/sample/sample_model_main.o python/sample/sample_model_llvm_ir.o -o python/sample/sample.out
+  - gcc -c python/mnist/mnist_model_main.cpp -o python/mnist/mnist_model_main.o && gcc python/mnist/mnist_model_main.o python/mnist/mnist_model_llvm_ir.o 
+    -Lexternals/torch-mlir/build/lib -lmlir_c_runner_utils -Wl,-rpath=externals/torch-mlir/build/lib -o python/mnist/mnist.out
+  - gcc -c python/cnn/cnn_model_main.cpp -o python/cnn/cnn_model_main.o &&
+    gcc python/cnn/cnn_model_main.o python/cnn/cnn_model_llvm_ir.o -o python/cnn/cnn.out -lm
+
+
+
+compare_outputs:
+  stage: test
+  script:
+  - for name in sample mnist cnn; do
+      ./${name}.out > c_output_${name}.txt
+      python python/${name}/test.py > py_output_${name}.txt
+      python compare_outputs.py c_output_${i}.txt py_output_${i}.txt
+    done
+

@@ -23,6 +23,7 @@ class NeuralNetwork(nn.Module):
     
 if __name__ == "__main__":
     model = NeuralNetwork()
-    x = torch.rand((1, 28, 28))
+    out = model(torch.ones((1, 28, 28)))
+    print(' '.join(f'{x:.4f}' for x in out.view(-1)))
     #print("Input: ", x)
-    print("Output: ", model(x))
+    #print("Output: ", model(x))

@@ -50,12 +50,12 @@ int main(int argc, char *argv[]) {
   // Access output buffer
   float* output = (float*)(result.aligned);
   
-  printf("Output tensor (shape: %ld x %ld):\n", result.sizes[0], result.sizes[1]);
-  printf("result.strides[0]: %ld\n", result.strides[0]);
-  printf("result.strides[1]: %ld\n", result.strides[1]);
+  //printf("Output tensor (shape: %ld x %ld):\n", result.sizes[0], result.sizes[1]);
+  //printf("result.strides[0]: %ld\n", result.strides[0]);
+  //printf("result.strides[1]: %ld\n", result.strides[1]);
   for (int64_t i = 0; i < result.sizes[0]; ++i) {
       for (int64_t j = 0; j < result.sizes[1]; ++j) {
-          printf("%.2f ", output[i * result.strides[0] + j * result.strides[1]]);
+          printf("%.4f ", output[i * result.strides[0] + j * result.strides[1]]);
       }
       printf("\n");
   }

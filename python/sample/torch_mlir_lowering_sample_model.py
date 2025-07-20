@@ -21,12 +21,8 @@ torch.manual_seed(41)
 class MyModule(nn.Module):
     def __init__(self) -> None:
         super().__init__()
-        # Can also try torch.manual_seed(0) and then use torch.rand(3, 4)
-        self.param = torch.nn.Parameter(torch.tensor([[1., 2., 3., 4.], [5., 6., 7., 8.], [9., 10., 11., 12.]]))
+        self.param = torch.nn.Parameter(torch.rand(3, 4))
         self.linear = torch.nn.Linear(4, 5)
-        with torch.no_grad():
-            self.linear.weight.copy_(torch.tensor([[0., 0., 0., 0.], [5., 6., 7., 8.], [9., 10., 11., 12.], [9., 10., 11., 12.], [9., 10., 11., 12.]]))
-            self.linear.bias.copy_(torch.tensor([0., 0., 0., 0., 1.]))
 
     def forward(self, x):
         return self.linear(x + self.param).clamp(min=0.0, max=1.0)

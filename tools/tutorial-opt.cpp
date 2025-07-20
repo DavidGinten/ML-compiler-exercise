@@ -4,6 +4,7 @@
 #include "mlir/Conversion/MathToLLVM/MathToLLVM.h"
 #include "mlir/Conversion/SCFToControlFlow/SCFToControlFlow.h"
 #include "mlir/Conversion/TensorToLinalg/TensorToLinalgPass.h"
+#include "mlir/Dialect/Affine/Passes.h"
 #include "mlir/Dialect/Bufferization/Pipelines/Passes.h"
 #include "mlir/Dialect/Bufferization/Transforms/Passes.h"
 #include "mlir/Dialect/Linalg/Passes.h"
@@ -33,6 +34,8 @@ void linalgToLLVMPipelineBuilder(mlir::OpPassManager &manager) {
   manager.addPass(mlir::memref::createExpandStridedMetadataPass());
   
   manager.addPass(mlir::createLowerAffinePass());
+  manager.addPass(mlir::affine::createLoopFusionPass());
+  manager.addPass(mlir::affine::createAffineVectorize());
   manager.addPass(mlir::createSCFToControlFlowPass());
   manager.addPass(mlir::createConvertControlFlowToLLVMPass());
   manager.addPass(mlir::createArithToLLVMConversionPass());
