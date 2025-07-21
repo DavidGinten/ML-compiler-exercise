@@ -1,9 +1,9 @@
 ; ModuleID = 'LLVMDialectModule'
 source_filename = "LLVMDialectModule"
 
-@__constant_5xf32 = private constant [5 x float] [float 0.000000e+00, float 0.000000e+00, float 0.000000e+00, float 0.000000e+00, float 1.000000e+00], align 64
-@__constant_5x4xf32 = private constant [5 x [4 x float]] [[4 x float] zeroinitializer, [4 x float] [float 5.000000e+00, float 6.000000e+00, float 7.000000e+00, float 8.000000e+00], [4 x float] [float 9.000000e+00, float 1.000000e+01, float 1.100000e+01, float 1.200000e+01], [4 x float] [float 9.000000e+00, float 1.000000e+01, float 1.100000e+01, float 1.200000e+01], [4 x float] [float 9.000000e+00, float 1.000000e+01, float 1.100000e+01, float 1.200000e+01]], align 64
-@__constant_3x4xf32 = private constant [3 x [4 x float]] [[4 x float] [float 1.000000e+00, float 2.000000e+00, float 3.000000e+00, float 4.000000e+00], [4 x float] [float 5.000000e+00, float 6.000000e+00, float 7.000000e+00, float 8.000000e+00], [4 x float] [float 9.000000e+00, float 1.000000e+01, float 1.100000e+01, float 1.200000e+01]], align 64
+@__constant_5xf32 = private constant [5 x float] [float 0xBF990C2C00000000, float 0xBFB15F8600000000, float 0x3FAD55C400000000, float 0x3FDECF7440000000, float 0x3FD2B4C700000000], align 64
+@__constant_5x4xf32 = private constant [5 x [4 x float]] [[4 x float] [float 0x3FD8353B00000000, float 0x3FA4D37000000000, float 0xBFD709DF40000000, float 0x3FDD86A8C0000000], [4 x float] [float 0x3FD7772C80000000, float 0xBF87B9D000000000, float 0xBFD2B50400000000, float 0xBFC8C9D600000000], [4 x float] [float 0xBFDC412A80000000, float 0x3FD534EF40000000, float 0xBFA6372E00000000, float 0x3FD60C2CC0000000], [4 x float] [float 0x3FC818EE00000000, float 0xBFB964A800000000, float 0xBFD4764D40000000, float 0x3FC6462E00000000], [4 x float] [float 0xBFD4885300000000, float 0xBFBC724900000000, float 0x3FD305FD80000000, float 0xBFD16CDBC0000000]], align 64
+@__constant_3x4xf32 = private constant [3 x [4 x float]] [[4 x float] [float 0x3FCE43E000000000, float 0x3FCD01D180000000, float 0x3FE99DF180000000, float 0x3FC5A7F100000000], [4 x float] [float 0x3FD0F51400000000, float 0x3FE8B42820000000, float 0x3FC0687980000000, float 0x3FE7D8CB20000000], [4 x float] [float 0x3FE9BE32E0000000, float 0x3FE457BAA0000000, float 0x3FE2DE2340000000, float 0x3FE62F6DA0000000]], align 64
 
 declare void @free(ptr)
 

@@ -2,6 +2,10 @@ import torch, time
 import torch.nn as nn
 import torch.nn.functional as F
 
+import os
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
+
 torch.manual_seed(41)
 
 class ConvolutionalNetwork(nn.Module):

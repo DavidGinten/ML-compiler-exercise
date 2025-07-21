@@ -9,7 +9,11 @@ run-job.sh
 
 /python/*.mlir
 /python/*.ll
-/python/*.o
-/python/*.out
+/python/*/*.o
+/python/*/*.out
 
 *mlir.txt
+
+# For OpenBLAS
+include/
+lib/*
