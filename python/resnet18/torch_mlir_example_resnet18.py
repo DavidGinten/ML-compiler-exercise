@@ -1,46 +1,3 @@
-"""from transformers import AutoImageProcessor, ResNetForImageClassification
-import torch
-from datasets import load_dataset
-import torchvision.models as models
-
-from torch_mlir import fx
-from torch_mlir.compiler_utils import (
-    OutputType,
-    run_pipeline_with_repro_report,
-)
-
-#dataset = load_dataset("huggingface/cats-image")
-#image = dataset["test"]["image"][0]
-
-#processor = AutoImageProcessor.from_pretrained("microsoft/resnet-50")
-model = models.resnet18(pretrained=True).eval()
-
-traced = torch.jit.trace(model, torch.ones(1, 3, 224, 224))
-def run(f):
-    #print(f"{f.__name__}")
-    #print("-" * len(f.__name__))
-    f()
-    print()
-
-@run
-def lower_pytorch_to_linalg_on_tensors():
-
-    # Tokenize sentences
-    # inputs = processor(image, return_tensors="pt")
-    
-    # Export model to torch-mlir
-    m = fx.export_and_import(traced, torch.ones(1, 3, 224, 224), output_type=OutputType.LINALG_ON_TENSORS, 
-                             func_name = "resnet18_model")
-    
-    # Model in torch dialect
-    mlir_str = str(m)
-    mlir_ir = mlir_str.split("{-#")[0].strip()
-    #print(mlir_ir)
-
-    with open("resnet18_model_linalg.mlir", "w") as f:
-        f.write(mlir_str)
-"""
-
 # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
@@ -134,7 +91,9 @@ with torch.no_grad():
 golden_prediction = top3_possibilities(resnet18.forward(img), labels)
 print("PyTorch prediction")
 print(golden_prediction)
+print(*numpy_inputs)
 
+"""
 prediction = top3_possibilities(
     torch.from_numpy(getattr(fx_module, resnet18.__class__.__name__)(*numpy_inputs)),
     labels,
@@ -142,3 +101,4 @@ prediction = top3_possibilities(
 print("torch-mlir prediction")
 with open("resnet18_input.mlir", "w") as f:
 	f.write(str(numpy_inputs))
+"""
