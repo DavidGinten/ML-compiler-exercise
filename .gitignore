@@ -1,21 +1,32 @@
-# Python venv
-dev
+# Python virtual environment
+dev/
 
-# Script to submit a job
+# Job submission script
 run-job.sh
 
-# Nested build directory
-/build*
+# Build directories
+build*/
 
-/python/*/*.mlir
-/python/*/*.ll
-/python/*/*.o
-/python/*/*.out
-/python/*/core.*
-/python/*/*.txt
+# Generated / temporary files
+*.mlir
+*.ll
+*.o
+*.out
+*.log
+*.txt
+core.*
 
+# Python subdir artifacts
+python/*/*.{mlir,ll,o,out,txt}
+python/*/core.*
+
+# MLIR text variants
 *mlir.txt
 
-# For OpenBLAS
+# OpenBLAS build artifacts
+lib/cmake/
+lib/pkgconfig/
+lib/*.a
+lib/*.so
+lib/*.so.*
 include/
-lib/*
