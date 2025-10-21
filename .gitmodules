@@ -1,3 +1,3 @@
 [submodule "externals/torch-mlir"]
 	path = externals/torch-mlir
-	url = https://github.com/llvm/torch-mlir.git
+	url = git@gitlab.com:david-ginten/torch-mlir.git
