@@ -1,3 +1,11 @@
+# ML compiler exercise
+
+This is a experimenting MLIR pipeline to lower ML models from PyTorch to x86. It is about to become an exercise 
+for a new lecture at RWTH Aachen.
+
+# Getting started
+Instructions are partially RWTH cluster specific.
+
 Initalize the submodules (torch-mlir, llvm-project)
 `git submodule update --init --recursive`
 
@@ -11,7 +19,7 @@ source venv_torch_mlir/bin/activate
 pip install --upgrade pip
 ```
 
-Install latest requirements
+Install latest requirements from torch-mlir
 `python -m pip install -r requirements.txt -r torchvision-requirements.txt`
 
 Configuration for building (in torch-mlir)
@@ -45,5 +53,4 @@ export PATH="/home/ab123456/ml-compiler-exercise/externals/torch-mlir/build/bin/
 
 # Add MLIR Python bindings and Setup Python Environment to export the built Python packages
 export PYTHONPATH=/home/ab123456/ml-compiler-exercise/externals/torch-mlir/build/tools/mlir/python_packages/mlir_core:/home/ab123456/ml-compiler-exercise/externals/torch-mlir/build/tools/torch-mlir/python_packages/torch_mlir:/home/ab123456/ml-compiler-exercise/externals/torch-mlir/test/python/fx_importer
-
 ```

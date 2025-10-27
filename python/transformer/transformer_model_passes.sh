@@ -21,6 +21,5 @@ llc --filetype=obj $PWD/flan_t5_small_llvm_ir.ll
 ###  Compile  ###
 gcc -c flan_t5_small_main.cpp -o flan_t5_small_main.o && gcc flan_t5_small_main.o flan_t5_small_llvm_ir.o -o a.out -lm
 gcc -c flan_t5_small_main.cpp -o flan_t5_small_main.o && gcc flan_t5_small_main.o flan_t5_small_llvm_ir.o -o a.out -L../../lib -lopenblas -lm
-gcc -O3 -c resnet50_model_benchmark.cpp -o bench.o && gcc bench.o resnet50_model_llvm_ir.o -o bench.out -L../../lib -lopenblas -lm
 
 gcc -c flan_t5_small_main.cpp -o flan_t5_small_main.o && gcc flan_t5_small_main.o t5_encoder_llvm_ir.o t5_decoder_step_llvm_ir.o -lm -L../../externals/torch-mlir/build/lib -L../../lib -lmlir_c_runner_utils -Wl,-rpath=../../externals/torch-mlir/build/lib -lopenblas -o a.out

@@ -1,2 +1,5 @@
+# GitLab CI/CD configuration file
+# Not yet used, included for potenial future use
+
 include:
   - local: '.gitlab/workflows/build_and_test.yml'

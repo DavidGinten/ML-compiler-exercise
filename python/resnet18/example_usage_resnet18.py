@@ -93,7 +93,7 @@ print("PyTorch prediction")
 print(golden_prediction)
 print(*numpy_inputs)
 
-"""
+
 prediction = top3_possibilities(
     torch.from_numpy(getattr(fx_module, resnet18.__class__.__name__)(*numpy_inputs)),
     labels,
@@ -101,4 +101,3 @@ prediction = top3_possibilities(
 print("torch-mlir prediction")
 with open("resnet18_input.mlir", "w") as f:
 	f.write(str(numpy_inputs))
-"""
