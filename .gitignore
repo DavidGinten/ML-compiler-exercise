@@ -8,7 +8,9 @@ run-job.sh
 build*/
 
 # Generated / temporary files
-*.mlir
+*.mlir 
+!tests/
+!tests/**/*.mlir
 *.ll
 *.o
 *.out

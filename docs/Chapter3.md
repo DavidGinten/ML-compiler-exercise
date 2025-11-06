@@ -1,6 +1,6 @@
 # Lowering models to machine code
 
-As in the tutorials, we will use existing passes to lower our models to llvm exit dialect. We create out own pipeline with all the passes, so at the end we only have to run pass that runs them all. This pipeline is defined in tools/tutorials-opt.cpp. We add the following passes:
+As in the tutorials, we will use existing passes to lower our models to llvm exit dialect. We create out own pipeline with all the passes, so at the end we only have to run pass that runs them all. This pipeline is defined in tools/tutorials-opt.cpp. There might be different combinations of passes you can run. We add the following passes:
 
 ``` C++
 void linalgToLLVMPipelineBuilder(mlir::OpPassManager &manager) {

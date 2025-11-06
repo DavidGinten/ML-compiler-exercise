@@ -1,1 +1,6 @@
 # Integration of BLAS for Matrix Multiplications
+
+We will now link to OpenBLAS that executes our matrix multiplications. For that, we first need to install OpenBLAS, for example by downloading the latest release version: OpenBLAS-0.3.30.tar.gz. Then unpack with `tar -xvzf OpenBLAS-0.3.30.tar.gz`. We then install OpenBLAS for Linux as descriebed [here](https://github.com/OpenMathLib/OpenBLAS/blob/develop/docs/install.md#linux). The [user_manual](https://github.com/OpenMathLib/OpenBLAS/blob/develop/docs/user_manual.md#compiling-openblas) how to compile OpenBLAS then. We run `make -j$(nproc)` and then `make install`. As described in the article, the CPU architecture is automatically detected by default when running *make*. The libraries are in /opt/OpenBLAS by default. However, you can also specify the directory: `make install PREFIX=/path/to/installation/directory`. An example for dynamic linking is this: `gcc -o test test.c -I/your_path/OpenBLAS/include/ -L/your_path/OpenBLAS/lib -Wl,-rpath,/your_path/OpenBLAS/lib -lopenblas`.
+
+We will now write our own pass that converts matrix multiplications (linalg matmuls). The pass is `-convert-matmul-to-blas`. In tests/ you can run an example.
+The header file (ConvertMatMulToBlas.h) and the implementation (ConvertMatMulToBlas.cpp) is in lib/. In the header file we define our class.  

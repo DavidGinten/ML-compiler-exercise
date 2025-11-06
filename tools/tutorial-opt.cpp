@@ -14,6 +14,8 @@
 #include "mlir/Pass/PassRegistry.h"
 #include "mlir/Tools/mlir-opt/MlirOptMain.h"
 
+
+// Todo: Create own pass to convert matmul to BLAS calls
 std::unique_ptr<mlir::Pass> createConvertMatmulToBlasLibraryCallPass() {
   return std::make_unique<mlir::tutorial::ConvertMatmulToBlasLibraryCallPass>();
 }
